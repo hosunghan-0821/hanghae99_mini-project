@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -34,6 +35,11 @@ public class WebSecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final HeaderTokenExtractor headerTokenExtractor;
     private final FormLoginSuccessHandler formLoginSuccessHandler;
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().antMatchers("/h2-console/**");
+    }
 
 
     @Bean
@@ -103,6 +109,8 @@ public class WebSecurityConfig {
 
         // Post 게시글 관련
         skipPathList.add("GET,/api/v1/posts/**");
+        skipPathList.add("GET,/h2-console/**");
+        skipPathList.add("POST,/h2-console/**");
 
         //기본 페이지 설정
         skipPathList.add("GET,/");
