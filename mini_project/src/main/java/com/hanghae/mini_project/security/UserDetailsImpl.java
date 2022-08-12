@@ -2,9 +2,12 @@ package com.hanghae.mini_project.security;
 
 
 import com.hanghae.mini_project.entity.User;
+import com.hanghae.mini_project.entity.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -21,9 +24,28 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
+
+    public String getRole(){
+        return this.user.getRole().getAuthority();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+
+        //User 객체로부터 역할 가져오기 Enum 형식
+        UserRoleEnum role = user.getRole();
+
+        //Enum 객체로부터 String으로 가져오기
+        String authority = role.getAuthority();
+
+        // (SimpleGrantedAuthorty extends GrantedAuthority) <<  객체 만들기
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
+
+        //return 조건을 맞추기 위해서 만들어주는 것으로 생각.
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(simpleGrantedAuthority);
+
+        return authorities;
     }
 
     @Override

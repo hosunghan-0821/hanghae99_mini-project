@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.Resource;
 
-public class FormLoginAuthProvider implements AuthenticationProvider {
+public class FormLoginAuthProvider implements AuthenticationProvider{
 
 
     @Resource(name="userDetailsServiceImpl")
@@ -36,9 +36,9 @@ public class FormLoginAuthProvider implements AuthenticationProvider {
 
         UserDetailsImpl userDetails =(UserDetailsImpl) userDetailsService.loadUserByUsername(username);
 
+        //비번일치 않을 경우, exception -> FormLoginFailureHandler 로 이동
         if(!passwordEncoder.matches(password,userDetails.getPassword())){
-            System.out.println("비밀번호 틀림");
-            throw new BadCredentialsException(userDetails.getUsername() + "Invalid password");
+            throw  new BadCredentialsException("INVALID USER INFO");
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());

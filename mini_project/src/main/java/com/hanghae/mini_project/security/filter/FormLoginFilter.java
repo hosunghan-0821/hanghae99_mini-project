@@ -9,12 +9,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 //로그인 인증하는 filter
 public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
+
+
 
     final private ObjectMapper objectMapper;
 
@@ -35,12 +42,14 @@ public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
             String password = requestBody.get("password").asText();
             authRequest = new UsernamePasswordAuthenticationToken(username,password);
         }catch (Exception e){
+
             throw new RuntimeException("username , password 입력이 필요합니다.(JSON)");
         }
 
         setDetails(request,authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
     }
+
 
 
 }

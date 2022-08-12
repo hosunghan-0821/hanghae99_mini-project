@@ -13,5 +13,4 @@ public class SignupRequestDto {
     private String authority;
     private String profileImageUrl;
     private String websiteUrl;
-    private String contactNum;
 }

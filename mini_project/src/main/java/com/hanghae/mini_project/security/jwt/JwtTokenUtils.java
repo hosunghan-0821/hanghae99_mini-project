@@ -6,6 +6,8 @@ import com.hanghae.mini_project.security.UserDetailsImpl;
 
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public final class JwtTokenUtils {
@@ -25,14 +27,18 @@ public final class JwtTokenUtils {
 
     public static final String CLAIM_EXPIRED_DATE = "EXPIRED_DATE";
     public static final String CLAIM_USER_NAME = "USER_NAME";
+
+    public static final String CLAIM_USER_ROLE = "USER_ROLE";
     public static final String JWT_SECRET = "jwt_secret_!@#$%";
 
     public static String generateJwtToken(UserDetailsImpl userDetails){
         String token = null;
+
         try{
             token= JWT.create()
-                    .withIssuer("hosung")
+                    .withIssuer("RECRUIT_PAGE")
                     .withClaim(CLAIM_USER_NAME,userDetails.getUsername())
+                    .withClaim(CLAIM_USER_ROLE,userDetails.getRole())
                     .withClaim(CLAIM_EXPIRED_DATE,new Date(System.currentTimeMillis() + JWT_TOKEN_VALID_MILLI_SEC))
                     .sign(generateAlgorithm());
         }

@@ -35,6 +35,8 @@ public class WebSecurityConfig {
     private final HeaderTokenExtractor headerTokenExtractor;
     private final FormLoginSuccessHandler formLoginSuccessHandler;
 
+    private final FormLoginFailureHandler formLoginFailureHandler;
+
 
     @Bean
     public BCryptPasswordEncoder encodePassword() {
@@ -83,6 +85,7 @@ public class WebSecurityConfig {
     public FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter formLoginFilter = new FormLoginFilter(authenticationManager(authenticationConfiguration));
         formLoginFilter.setFilterProcessesUrl("/api/v1/login");
+        formLoginFilter.setAuthenticationFailureHandler(formLoginFailureHandler);
         formLoginFilter.setAuthenticationSuccessHandler(formLoginSuccessHandler);
         formLoginFilter.afterPropertiesSet();
 //        System.out.println(authenticationManager(authenticationConfiguration));
@@ -110,6 +113,7 @@ public class WebSecurityConfig {
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(skipPathList, "/**");
         JwtAuthFilter filter = new JwtAuthFilter(headerTokenExtractor, matcher);
+
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
