@@ -2,12 +2,12 @@ package com.hanghae.mini_project.service;
 
 
 import com.hanghae.mini_project.dto.requestDto.SignupRequestDto;
+import com.hanghae.mini_project.dto.responseDto.LoginInfoDto;
 import com.hanghae.mini_project.entity.User;
 import com.hanghae.mini_project.repository.UserRepository;
-import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.jwt.JwtDecoder;
-import com.hanghae.mini_project.security.jwt.JwtTokenUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,9 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+@Getter
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -30,21 +33,32 @@ public class UserService {
 
     private final HeaderTokenExtractor headerTokenExtractor;
 
-    @Resource(name="userDetailsServiceImpl")
+    @Resource(name = "userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
+
+    private String userName;
+    private String companyName;
+    private String contactNum;
+    private String ProfileImageUrl;
+
+    //진무----------------
+    User user = new User(userName, companyName, contactNum, ProfileImageUrl);
+    //--------------------
+
+
 
     public void registerUser(SignupRequestDto requestDto){
 
         //여기서 요구조건 확인하는
         if(!checkSignupValueCondition(requestDto)){
             throw new IllegalArgumentException("회원가입 정보가 정확하지 않습니다.");
-        };
+        }
         //회원 닉네임 중복 확인
         Optional<User> found = userRepository.findByUsername(requestDto.getUsername());
         if(found.isPresent()){
             throw new IllegalArgumentException("중복된 사용자 id가 존재합니다.");
         }
-        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword())); ;
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         User userInfo = new User(requestDto);
         userRepository.save(userInfo);
 
@@ -75,4 +89,25 @@ public class UserService {
         }
         return checkValueCondition;
     }
+
+    // 진무----------
+    public LoginInfoDto getUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존해하지 않습니다."));
+        return new LoginInfoDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<LoginInfoDto> getUsers() {
+        List<User> users = userRepository.findAll();
+        List<LoginInfoDto> loginInfoDtos = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            LoginInfoDto loginInfoDto = new LoginInfoDto(user);
+            loginInfoDtos.add(loginInfoDto);
+        }
+        return loginInfoDtos;
+    }
+    //----------------
+
 }

@@ -1,6 +1,7 @@
 package com.hanghae.mini_project.controller;
 
 import com.hanghae.mini_project.dto.requestDto.SignupRequestDto;
+import com.hanghae.mini_project.dto.responseDto.LoginInfoDto;
 import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,12 @@ public class UserController {
         System.out.println(signupRequestDto.getUsername()+"\n"+signupRequestDto.getPassword());
         userService.registerUser(signupRequestDto);
         return signupRequestDto;
+    }
+    // 진무
+    // 각 조회
+    @GetMapping("/api/v1/signup/{id}")
+    public LoginInfoDto getUser(@PathVariable Long id) {
+        LoginInfoDto user = userService.getUser(id);
+        return user;
     }
 }

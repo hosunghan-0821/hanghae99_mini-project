@@ -46,4 +46,7 @@ public class User {
         this.contactNum = requestDto.getContactNum();
         this.profileImageUrl = requestDto.getProfileImageUrl();
     }
+
+    public User(String userName, String companyName, String contactNum, String profileImageUrl) {
+    }
 }
