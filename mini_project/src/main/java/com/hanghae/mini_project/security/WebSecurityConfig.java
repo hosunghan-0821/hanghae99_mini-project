@@ -109,8 +109,6 @@ public class WebSecurityConfig {
 
         // Post 게시글 관련
         skipPathList.add("GET,/api/v1/posts/**");
-        skipPathList.add("GET,/h2-console/**");
-        skipPathList.add("POST,/h2-console/**");
 
         //기본 페이지 설정
         skipPathList.add("GET,/");

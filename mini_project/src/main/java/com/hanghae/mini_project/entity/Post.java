@@ -1,6 +1,8 @@
 package com.hanghae.mini_project.entity;
 
 
+import com.hanghae.mini_project.dto.requestDto.postReqDto.PostCreateDto;
+import com.hanghae.mini_project.dto.requestDto.postReqDto.PostRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,10 +36,18 @@ public class Post {
     private List<TechStack> techStackList;
 
     // commentList
-    //CascadeType.Remove & All 차이 공부
+    // CascadeType.Remove & All 차이 공부
     // mappedBy 연관관계의 주인이 아니다 (난 FK가 아니다 DB에 칼럼을 만들지 말아라)
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY ,cascade =CascadeType.REMOVE)
     private List<Comment> commentList;
 
 
+    public Post(PostCreateDto postCreateDto) {
+        this.description = postCreateDto.getDescription();
+        this.user = postCreateDto.getUser();
+    }
+
+    public void update(PostRequestDto postRequestDto) {
+        this.description = postRequestDto.getDescription();
+    }
 }
