@@ -1,7 +1,6 @@
 package com.hanghae.mini_project.security;
 
 
-
 import com.hanghae.mini_project.security.filter.FormLoginFilter;
 import com.hanghae.mini_project.security.filter.JwtAuthFilter;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
@@ -16,7 +15,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -36,10 +34,8 @@ public class WebSecurityConfig {
     private final HeaderTokenExtractor headerTokenExtractor;
     private final FormLoginSuccessHandler formLoginSuccessHandler;
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().antMatchers("/h2-console/**");
-    }
+
+    private final FormLoginFailureHandler formLoginFailureHandler;
 
 
     @Bean
@@ -89,6 +85,7 @@ public class WebSecurityConfig {
     public FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter formLoginFilter = new FormLoginFilter(authenticationManager(authenticationConfiguration));
         formLoginFilter.setFilterProcessesUrl("/api/v1/login");
+        formLoginFilter.setAuthenticationFailureHandler(formLoginFailureHandler);
         formLoginFilter.setAuthenticationSuccessHandler(formLoginSuccessHandler);
         formLoginFilter.afterPropertiesSet();
 //        System.out.println(authenticationManager(authenticationConfiguration));
@@ -116,6 +113,7 @@ public class WebSecurityConfig {
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(skipPathList, "/**");
         JwtAuthFilter filter = new JwtAuthFilter(headerTokenExtractor, matcher);
+
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }

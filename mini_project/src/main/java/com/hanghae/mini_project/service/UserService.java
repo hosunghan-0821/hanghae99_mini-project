@@ -2,17 +2,17 @@ package com.hanghae.mini_project.service;
 
 
 import com.hanghae.mini_project.dto.requestDto.SignupRequestDto;
+import com.hanghae.mini_project.dto.responseDto.LoginInfoDto;
+import com.hanghae.mini_project.dto.responseDto.ResponseDto;
 import com.hanghae.mini_project.entity.User;
+import com.hanghae.mini_project.entity.UserRoleEnum;
 import com.hanghae.mini_project.repository.UserRepository;
-import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.jwt.JwtDecoder;
-import com.hanghae.mini_project.security.jwt.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class UserService {
     @Resource(name="userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
 
-    public void registerUser(SignupRequestDto requestDto){
+    public ResponseDto<?> registerUser(SignupRequestDto requestDto){
 
         //여기서 요구조건 확인하는
         if(!checkSignupValueCondition(requestDto)){
@@ -44,10 +44,23 @@ public class UserService {
         if(found.isPresent()){
             throw new IllegalArgumentException("중복된 사용자 id가 존재합니다.");
         }
-        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword())); ;
-        User userInfo = new User(requestDto);
+        requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
+        UserRoleEnum role;
+        if(requestDto.getAuthority().equals(UserRoleEnum.Authority.JOB_SEEKER)){
+            role = UserRoleEnum.JOB_SEEKER;
+        }
+        else{
+            role = UserRoleEnum.RECRUITER;
+        }
+        User userInfo = new User(requestDto,role);
         userRepository.save(userInfo);
 
+        LoginInfoDto loginInfoDto = LoginInfoDto.builder()
+                .username(userInfo.getUsername())
+                .authority(userInfo.getRole().getAuthority())
+                .build();
+        //ResponseDto 만들기
+       return  ResponseDto.success("회원가입에 성공하였습니다.",loginInfoDto);
 
     }
 

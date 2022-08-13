@@ -1,7 +1,5 @@
 package com.hanghae.mini_project.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.hanghae.mini_project.dto.ResponseDto;
 import com.hanghae.mini_project.dto.requestDto.postReqDto.PostRequestDto;
 import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.service.PostService;
@@ -22,7 +20,7 @@ public class PostController {
     public ResponseEntity<?> createPost(@RequestBody PostRequestDto postRequestDto,
                            @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        return new ResponseEntity<>(ResponseDto.success(postService.createPost(postRequestDto, userDetails)),HttpStatus.OK);
+        return new ResponseEntity<>(postService.createPost(postRequestDto, userDetails),HttpStatus.OK);
     }
 
 
@@ -30,7 +28,14 @@ public class PostController {
     public ResponseEntity<?> updatePost(@PathVariable Long id,
                                      @RequestBody PostRequestDto postRequestDto,
                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new ResponseEntity<>(ResponseDto.success(postService.update(id, postRequestDto, userDetails)),HttpStatus.OK);
+        return postService.update(id, postRequestDto, userDetails);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable Long id,
+                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.deletePost(id, userDetails);
     }
 
 

@@ -2,7 +2,6 @@ package com.hanghae.mini_project.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hanghae.mini_project.dto.requestDto.SignupRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table (name="users")
 @NoArgsConstructor
-public class User {
+public class User extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -38,12 +37,16 @@ public class User {
     @Column
     private String profileImageUrl;
 
-    public User(SignupRequestDto requestDto){
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private UserRoleEnum role;
+
+    public User(SignupRequestDto requestDto,UserRoleEnum role){
         //권한에 대해서 만들어야함.
         this.username = requestDto.getUsername();
         this.password = requestDto.getPassword();
         this.companyName = requestDto.getCompanyName();
-        this.contactNum = requestDto.getContactNum();
         this.profileImageUrl = requestDto.getProfileImageUrl();
+        this.role=role;
     }
 }

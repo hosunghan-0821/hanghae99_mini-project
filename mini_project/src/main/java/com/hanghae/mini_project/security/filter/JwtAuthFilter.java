@@ -33,17 +33,16 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        System.out.println(1);
-        System.out.println("attemptAutentication () 실행 ");
 
+        System.out.println("attemptAutentication () 실행 ");
 
         // JWT 값을 담아주는 변수 TokenPayload
         String tokenPayload = request.getHeader("Authorization");
-        String refreshToken = request.getHeader("Refresh");
-        System.out.println("refresh token : " + refreshToken);
-        System.out.println("access token  : " + tokenPayload);
+
         if (tokenPayload == null) {
-            response.sendRedirect("/api/loginView");
+
+            //
+            //response.sendRedirect("/api/loginView");
             return null;
         }
 
@@ -60,13 +59,11 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
          *  SecurityContext 사용자 Token 저장소를 생성합니다.
          *  SecurityContext 에 사용자의 인증된 Token 값을 저장합니다.
          */
-        System.out.println(3);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authResult);
         SecurityContextHolder.setContext(context);
 
         //FilterChain chain 해당 필터가 실행 후 다른 필터도 실행 할 수 있도록 연결 시켜주는 메서드
-
         chain.doFilter(request,response);
     }
 
