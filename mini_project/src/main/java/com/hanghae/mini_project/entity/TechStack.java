@@ -15,12 +15,14 @@ public class TechStack {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @JsonIgnore
     private Long id;
 
     private String stackName;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @JsonIgnore
     private Post post;
 
     public TechStack(String stack, Post post) {

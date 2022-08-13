@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/auth/recruits")
+@RequestMapping("/api/v1/auth")
 public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/")
+    @PostMapping("/recruits")
     public ResponseEntity<?> createPost(@RequestBody PostRequestDto postRequestDto,
                            @AuthenticationPrincipal UserDetailsImpl userDetails){
 
@@ -24,7 +24,7 @@ public class PostController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/recruits/{id}")
     public ResponseEntity<?> updatePost(@PathVariable Long id,
                                      @RequestBody PostRequestDto postRequestDto,
                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -32,7 +32,7 @@ public class PostController {
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/recruits/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.deletePost(id, userDetails);
