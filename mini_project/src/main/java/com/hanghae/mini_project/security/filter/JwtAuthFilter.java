@@ -34,15 +34,13 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
 
-        System.out.println("attemptAutentication () 실행 ");
+        System.out.println("JWT_FILTER : attemptAutentication () 실행 ");
 
         // JWT 값을 담아주는 변수 TokenPayload
         String tokenPayload = request.getHeader("Authorization");
 
-        if (tokenPayload == null) {
-
-            //
-            //response.sendRedirect("/api/loginView");
+        if (tokenPayload == null || tokenPayload.equals("")) {
+            //여기다가 exception 만들어놔야함.
             return null;
         }
 

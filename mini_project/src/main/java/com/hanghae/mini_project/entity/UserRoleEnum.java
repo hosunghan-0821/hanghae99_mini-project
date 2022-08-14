@@ -14,7 +14,10 @@ public enum UserRoleEnum {
         return this.authority;
     }
     public static class Authority{
-        public static final String RECRUITER="구인자";
-        public static final String JOB_SEEKER ="구직자";
+
+        public static final String RECRUITER_STR="구인자";
+        public static final String JOB_SEEKER_STR="구직자";
+        public static final String RECRUITER="ROLE_RECRUITER";
+        public static final String JOB_SEEKER ="ROLE_JOB_SEEKER";
     }
 }

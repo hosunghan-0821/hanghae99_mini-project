@@ -37,6 +37,8 @@ public class WebSecurityConfig {
 
     private final FormLoginFailureHandler formLoginFailureHandler;
 
+    private final AccessDeniedHandler accessDeniedHandler;
+
 
     @Bean
     public BCryptPasswordEncoder encodePassword() {
@@ -70,7 +72,10 @@ public class WebSecurityConfig {
                 .logout()
                 .logoutUrl("/api/logout")
                 .logoutSuccessUrl("/")
-                .permitAll();
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler);
 
         return http.build();
     }
