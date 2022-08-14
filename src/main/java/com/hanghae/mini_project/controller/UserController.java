@@ -27,11 +27,5 @@ public class UserController {
         userService.registerUser(signupRequestDto);
         return signupRequestDto;
     }
-    // 진무
-    // 각 조회
-    @GetMapping("/api/v1/signup/{id}")
-    public LoginInfoDto getUser(@PathVariable Long id) {
-        LoginInfoDto user = userService.getUser(id);
-        return user;
-    }
+
 }

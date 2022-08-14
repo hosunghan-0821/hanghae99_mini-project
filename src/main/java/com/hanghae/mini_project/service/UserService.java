@@ -90,24 +90,5 @@ public class UserService {
         return checkValueCondition;
     }
 
-    // 진무----------
-    public LoginInfoDto getUser(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존해하지 않습니다."));
-        return new LoginInfoDto(user);
-    }
-
-    @Transactional(readOnly = true)
-    public List<LoginInfoDto> getUsers() {
-        List<User> users = userRepository.findAll();
-        List<LoginInfoDto> loginInfoDtos = new ArrayList<>();
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            LoginInfoDto loginInfoDto = new LoginInfoDto(user);
-            loginInfoDtos.add(loginInfoDto);
-        }
-        return loginInfoDtos;
-    }
-    //----------------
 
 }
