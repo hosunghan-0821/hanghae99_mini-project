@@ -4,6 +4,9 @@ import com.hanghae.mini_project.dto.requestDto.RecommentRequestDto;
 import com.hanghae.mini_project.dto.responseDto.RecommentResponseDto;
 import com.hanghae.mini_project.entity.Comment;
 import com.hanghae.mini_project.entity.Recomment;
+import com.hanghae.mini_project.exception.ErrorCode.CommonErrorCode;
+import com.hanghae.mini_project.exception.ErrorCode.CustomErrorCode;
+import com.hanghae.mini_project.exception.Exception.RestApiException;
 import com.hanghae.mini_project.repository.CommentRepository;
 import com.hanghae.mini_project.repository.RecommentRepository;
 import com.hanghae.mini_project.security.UserDetailsImpl;
@@ -63,22 +66,24 @@ public class RecommentService {
     }
 
     private Comment checkValidatecomment(UserDetailsImpl userDetails, Long commentId){
+
         //commentID로부터 comment 객체 받아오기
-        Comment comment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("해당 문의사항이 존재하지 않습니다."));
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(()->new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
 
         //문의사항 답변은 게시글 작성자만 할 수 있게만 해야하기 때문에 Exception으로 컽해야함.
         if(!(comment.getPost().getUser().getId() == userDetails.getUser().getId())){
-            throw new IllegalArgumentException("작성자만 문의사항에 답변할 수 있습니다.");
+            //throw new IllegalArgumentException("작성자만 문의사항에 답변할 수 있습니다.");
+            throw new RestApiException(CustomErrorCode.UNAUTHORIZED_REQUEST);
         }
         return comment;
     }
 
     private Recomment checkValidateRecomment(UserDetailsImpl userDetails,Long recommentId){
+
         //recoomentId로 부터 recomment 객체 받아오기
-        Recomment recomment = recommentRepository.findById(recommentId).orElseThrow(()->new IllegalArgumentException("해당 문의사항이 존재하지 않습니다"));
-        if( !(recomment.getUser().getId() ==userDetails.getUser().getId())){
-            throw new IllegalArgumentException("작성자만 문의사항에 접근할 수 있습니다.");
-        }
+        Recomment recomment = recommentRepository.findById(recommentId)
+                .orElseThrow(()->new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         return recomment;
     }
 
