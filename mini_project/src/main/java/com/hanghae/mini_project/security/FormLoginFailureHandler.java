@@ -2,6 +2,8 @@ package com.hanghae.mini_project.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanghae.mini_project.dto.responseDto.ResponseDto;
+import com.hanghae.mini_project.exception.ErrorCode.CommonErrorCode;
+import com.hanghae.mini_project.exception.Exception.RestApiException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -17,6 +19,7 @@ import java.io.IOException;
 public class FormLoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+
 
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(

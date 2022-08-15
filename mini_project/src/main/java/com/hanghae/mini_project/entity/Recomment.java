@@ -1,13 +1,17 @@
 package com.hanghae.mini_project.entity;
 
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Entity
-public class Recomment {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Recomment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

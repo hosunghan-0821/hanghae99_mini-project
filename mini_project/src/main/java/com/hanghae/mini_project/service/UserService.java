@@ -49,7 +49,7 @@ public class UserService {
         }
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         UserRoleEnum role;
-        if(requestDto.getAuthority().equals(UserRoleEnum.Authority.JOB_SEEKER)){
+        if(requestDto.getAuthority().equals(UserRoleEnum.Authority.JOB_SEEKER_STR)){
             role = UserRoleEnum.JOB_SEEKER;
         }
         else{
