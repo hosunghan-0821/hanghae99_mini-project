@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -16,6 +17,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Errorcode errorcode = e.getErrorcode();
         return handleExceptionInternal(errorcode);
     }
+
 
     private ResponseEntity<Object> handleExceptionInternal(Errorcode errorcode){
         return ResponseEntity.status(errorcode.getHttpStatus()).body(makeErrorResponse(errorcode));

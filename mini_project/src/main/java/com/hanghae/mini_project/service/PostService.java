@@ -45,7 +45,6 @@ public class PostService {
         return new ResponseEntity<>(ResponseDto.success("공고글 전체목록", postDtoList), HttpStatus.OK);
     }
 
-
     public ResponseEntity<?> getPostDetail(Long id) {
         if(!postRepository.findById(id).isPresent()){
             return new ResponseEntity<>(ResponseDto.fail("404_NOT_FOUND",

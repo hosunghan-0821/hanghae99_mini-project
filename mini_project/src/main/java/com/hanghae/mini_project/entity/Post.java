@@ -26,6 +26,9 @@ public class Post extends Timestamped{
     @Column
     private String description;
 
+    @Column
+    private String jobTitle;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
