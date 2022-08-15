@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PostRequestDto {
 
+    private String jobTitle;
     private TechStackDto techStackList;
     private String description;
 }

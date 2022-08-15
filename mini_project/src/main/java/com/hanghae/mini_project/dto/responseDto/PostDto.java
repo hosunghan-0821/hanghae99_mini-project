@@ -15,14 +15,18 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class PostDto {
+    private Long id;
     private String createdAt;
     private String updatedAt;
     private String description;
     private UserDto user;
+
+    private String jobTitle;
     private List<CommentDto> commentList= new ArrayList<>();
     private List<String> stackList = new ArrayList<>();
 
     public PostDto(Post post) {
+        this.id = post.getId();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getModifiedAt();
         this.description = post.getDescription();
@@ -39,6 +43,9 @@ public class PostDto {
         }
     }
     public  PostDto (Post post,String allPost){
+
+        this.jobTitle = post.getJobTitle();
+        this.id = post.getId();
         this.createdAt = post.getCreatedAt();
         this.updatedAt = post.getModifiedAt();
         this.description = post.getDescription();
