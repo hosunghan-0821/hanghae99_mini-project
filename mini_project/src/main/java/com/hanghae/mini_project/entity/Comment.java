@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Entity
-public class Comment {
+public class Comment extends Timestamped{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

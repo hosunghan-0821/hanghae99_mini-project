@@ -1,7 +1,6 @@
 package com.hanghae.mini_project.security;
 
 
-
 import com.hanghae.mini_project.security.filter.FormLoginFilter;
 import com.hanghae.mini_project.security.filter.JwtAuthFilter;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
@@ -34,6 +33,7 @@ public class WebSecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final HeaderTokenExtractor headerTokenExtractor;
     private final FormLoginSuccessHandler formLoginSuccessHandler;
+
 
     private final FormLoginFailureHandler formLoginFailureHandler;
 

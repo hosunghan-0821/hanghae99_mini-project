@@ -5,7 +5,6 @@ import com.hanghae.mini_project.dto.responseDto.ResponseDto;
 import com.hanghae.mini_project.exception.ErrorCode.CommonErrorCode;
 import com.hanghae.mini_project.exception.Exception.RestApiException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 

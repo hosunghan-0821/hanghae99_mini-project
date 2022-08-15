@@ -7,15 +7,12 @@ import com.hanghae.mini_project.dto.responseDto.ResponseDto;
 import com.hanghae.mini_project.entity.User;
 import com.hanghae.mini_project.entity.UserRoleEnum;
 import com.hanghae.mini_project.repository.UserRepository;
-import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.jwt.JwtDecoder;
-import com.hanghae.mini_project.security.jwt.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Optional;
