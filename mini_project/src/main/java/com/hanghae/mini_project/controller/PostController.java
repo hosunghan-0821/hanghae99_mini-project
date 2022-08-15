@@ -5,6 +5,7 @@ import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class PostController {
         return postService.getPostDetail(id);
     }
 
+    @Secured("ROLE_RECRUITER")
     @PostMapping("/api/v1/auth/recruits")
     public ResponseEntity<?> createPost(@RequestBody PostRequestDto postRequestDto,
                            @AuthenticationPrincipal UserDetailsImpl userDetails){
@@ -31,7 +33,7 @@ public class PostController {
         return postService.createPost(postRequestDto, userDetails);
     }
 
-
+    @Secured("ROLE_RECRUITER")
     @PutMapping("/api/v1/auth/recruits/{id}")
     public ResponseEntity<?> updatePost(@PathVariable Long id,
                                      @RequestBody PostRequestDto postRequestDto,
@@ -40,6 +42,7 @@ public class PostController {
     }
 
 
+    @Secured("ROLE_RECRUITER")
     @DeleteMapping("/api/v1/auth/recruits/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id,
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {

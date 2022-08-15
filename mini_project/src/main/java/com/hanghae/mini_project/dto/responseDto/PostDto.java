@@ -38,4 +38,17 @@ public class PostDto {
             this.stackList.add(stack.getStackName());
         }
     }
+    public  PostDto (Post post,String allPost){
+        this.createdAt = post.getCreatedAt();
+        this.updatedAt = post.getModifiedAt();
+        this.description = post.getDescription();
+        this.user = new UserDto(post.getUser());
+
+        List<TechStack> techStackList = post.getTechStackList();
+        for(TechStack stack:techStackList) {
+            this.stackList.add(stack.getStackName());
+        }
+    }
+
+
 }

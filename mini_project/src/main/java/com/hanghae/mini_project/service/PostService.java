@@ -39,7 +39,7 @@ public class PostService {
         List<Post> allPosts = postRepository.findByOrderByCreatedAtDesc();
         List<PostDto> postDtoList = new ArrayList<>();
         for(Post post : allPosts) {
-            postDtoList.add(new PostDto(post));
+            postDtoList.add(new PostDto(post,"allPost"));
         }
 
         return new ResponseEntity<>(ResponseDto.success("공고글 전체목록", postDtoList), HttpStatus.OK);

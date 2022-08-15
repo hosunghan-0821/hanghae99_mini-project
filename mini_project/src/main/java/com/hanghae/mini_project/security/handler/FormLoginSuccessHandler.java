@@ -1,9 +1,10 @@
-package com.hanghae.mini_project.security;
+package com.hanghae.mini_project.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.hanghae.mini_project.dto.responseDto.LoginInfoDto;
 import com.hanghae.mini_project.dto.responseDto.ResponseDto;
+import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.security.jwt.JwtTokenUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;

@@ -21,7 +21,7 @@ public class User extends Timestamped {
     @Id
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String username;
 
     @JsonIgnore

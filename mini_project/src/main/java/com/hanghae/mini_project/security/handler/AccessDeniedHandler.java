@@ -1,4 +1,4 @@
-package com.hanghae.mini_project.security;
+package com.hanghae.mini_project.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanghae.mini_project.dto.responseDto.ResponseDto;
@@ -14,7 +14,7 @@ import java.io.IOException;
 public class AccessDeniedHandler implements org.springframework.security.web.access.AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        //System.out.println(accessDeniedException.getMessage());
+
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().println(
                 new ObjectMapper().writeValueAsString(

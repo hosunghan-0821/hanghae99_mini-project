@@ -4,11 +4,13 @@ package com.hanghae.mini_project.security.filter;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.jwt.JwtPreProcessingToken;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.FilterChain;
@@ -16,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 /**
  * Token 을 내려주는 Filter 가 아닌  client 에서 받아지는 Token 을 서버 사이드에서 검증하는 클레스 SecurityContextHolder 보관소에 해당
@@ -40,8 +43,7 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
         String tokenPayload = request.getHeader("Authorization");
 
         if (tokenPayload == null || tokenPayload.equals("")) {
-            //여기다가 exception 만들어놔야함.
-            return null;
+            throw new AuthenticationCredentialsNotFoundException("토큰이 존재하지 않습니다");
         }
 
         JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(extractor.extract(tokenPayload));
@@ -73,7 +75,6 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
          *	인증이 성공하지 못한 단계 이기 때문에 잘못된 Token값을 제거합니다.
          *	모든 인증받은 Context 값이 삭제 됩니다.
          */
-        System.out.println("실패 3");
         SecurityContextHolder.clearContext();
         super.unsuccessfulAuthentication(request,response,failed);
     }
