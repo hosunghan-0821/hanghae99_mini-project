@@ -1,6 +1,5 @@
 package com.hanghae.mini_project.dto.responseDto;
 
-import com.hanghae.mini_project.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

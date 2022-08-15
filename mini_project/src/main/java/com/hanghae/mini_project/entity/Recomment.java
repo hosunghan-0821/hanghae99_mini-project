@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Getter
 @Entity
-public class Recomment {
+public class Recomment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;

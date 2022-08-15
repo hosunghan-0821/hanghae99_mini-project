@@ -3,7 +3,10 @@ package com.hanghae.mini_project.entity;
 
 import com.hanghae.mini_project.dto.requestDto.postReqDto.PostCreateDto;
 import com.hanghae.mini_project.dto.requestDto.postReqDto.PostRequestDto;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post {
+public class Post extends Timestamped{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
