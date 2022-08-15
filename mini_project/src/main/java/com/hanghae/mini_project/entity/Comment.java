@@ -4,6 +4,7 @@ package com.hanghae.mini_project.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,6 +31,6 @@ public class Comment extends Timestamped{
     //연관관계
     //recommentList
     @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY ,cascade =CascadeType.REMOVE)
-    private List<Recomment> recommentList;
+    private List<Recomment> recommentList = new ArrayList<>();
 
 }
