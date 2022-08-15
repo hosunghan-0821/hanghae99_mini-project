@@ -49,7 +49,7 @@ public class RecommentService {
         checkValidatecomment(userDetails,commentId);
         Recomment recomment=checkValidateRecomment(userDetails,requestDto.getRecommentId());
 
-        recomment.setContent(requestDto.getContent());
+        recomment.update(requestDto.getContent());
         recommentRepository.save(recomment);
         return makeResponseDto(recomment);
     }

@@ -27,4 +27,9 @@ public class Recomment extends Timestamped{
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
+
+    public void update(String content){
+        this.content = content;
+
+    }
 }
