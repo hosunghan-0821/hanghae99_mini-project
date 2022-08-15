@@ -1,4 +1,4 @@
-package com.hanghae.mini_project.security;
+package com.hanghae.mini_project.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanghae.mini_project.dto.responseDto.ResponseDto;

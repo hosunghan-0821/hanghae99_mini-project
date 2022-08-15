@@ -8,6 +8,7 @@ import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.security.jwt.JwtDecoder;
 import com.hanghae.mini_project.security.jwt.JwtPreProcessingToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -37,7 +38,7 @@ public class JWTAuthProvider implements AuthenticationProvider {
 //          -> 해결을 위해서는 UserDetailsImpl 에 User 객체를 저장하지 않도록 수정
 //          ex) UserDetailsImpl 에 userId, username, role 만 저장
 //            -> JWT 에 userId, username, role 정보를 암호화/복호화하여 사용
-        User user = userRepository.findByUsername(username).orElseThrow(()->new UsernameNotFoundException("해당 아이디 없어요"));
+        User user = userRepository.findByUsername(username).orElseThrow(()->new AuthenticationCredentialsNotFoundException("해당 회원정보가 없습니다."));
         UserDetailsImpl userDetails = new UserDetailsImpl(user);
 
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());

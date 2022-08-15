@@ -3,6 +3,10 @@ package com.hanghae.mini_project.security;
 
 import com.hanghae.mini_project.security.filter.FormLoginFilter;
 import com.hanghae.mini_project.security.filter.JwtAuthFilter;
+import com.hanghae.mini_project.security.handler.AccessDeniedHandler;
+import com.hanghae.mini_project.security.handler.AuthenticationFailHandler;
+import com.hanghae.mini_project.security.handler.FormLoginFailureHandler;
+import com.hanghae.mini_project.security.handler.FormLoginSuccessHandler;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.provider.FormLoginAuthProvider;
 import com.hanghae.mini_project.security.provider.JWTAuthProvider;
@@ -39,6 +43,8 @@ public class WebSecurityConfig {
 
     private final AccessDeniedHandler accessDeniedHandler;
 
+    private final AuthenticationFailHandler authenticationFailHandler;
+
 
     @Bean
     public BCryptPasswordEncoder encodePassword() {
@@ -46,7 +52,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManagerBuilder auth) throws Exception {
+    public SecurityFilterChain filterChain( HttpSecurity http, AuthenticationManagerBuilder auth) throws Exception {
         //인증 (Authentication)**: 사용자 신원을 확인하는 행위
         //인가 (Authorization)**: 사용자 권한을 확인하는 행위
         auth
@@ -119,6 +125,7 @@ public class WebSecurityConfig {
         FilterSkipMatcher matcher = new FilterSkipMatcher(skipPathList, "/**");
         JwtAuthFilter filter = new JwtAuthFilter(headerTokenExtractor, matcher);
 
+        filter.setAuthenticationFailureHandler(authenticationFailHandler);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
