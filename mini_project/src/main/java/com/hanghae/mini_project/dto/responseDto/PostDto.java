@@ -31,6 +31,7 @@ public class PostDto {
         this.updatedAt = post.getModifiedAt();
         this.description = post.getDescription();
         this.user = new UserDto(post.getUser());
+        this.jobTitle = post.getJobTitle();
 
         List<Comment> comments = post.getCommentList();
         for (Comment comment : comments) {

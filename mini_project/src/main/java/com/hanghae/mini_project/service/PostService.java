@@ -60,7 +60,7 @@ public class PostService {
 
         // 기술스택 리스트를 PostRequestDto에서 추출
         List<String> stackList = postRequestDto.getTechStackList().getStackList();
-        Post post = new Post(new PostCreateDto(postRequestDto.getDescription(), userDetails.getUser()));
+        Post post = new Post(new PostCreateDto(postRequestDto.getJobTitle(), postRequestDto.getDescription(), userDetails.getUser()));
 
         // 이 공고글에서 체크된 기술스택 DB에 저장
         for(String stack : stackList) {
