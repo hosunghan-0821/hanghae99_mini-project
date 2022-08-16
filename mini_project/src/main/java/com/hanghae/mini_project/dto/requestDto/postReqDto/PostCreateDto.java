@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class PostCreateDto {
+    private String jobTitle;
     private String description;
     private User user;
 }

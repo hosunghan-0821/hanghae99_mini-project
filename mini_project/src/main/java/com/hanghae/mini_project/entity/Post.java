@@ -49,11 +49,13 @@ public class Post extends Timestamped{
 
 
     public Post(PostCreateDto postCreateDto) {
+        this.jobTitle = postCreateDto.getJobTitle();
         this.description = postCreateDto.getDescription();
         this.user = postCreateDto.getUser();
     }
 
     public void update(PostRequestDto postRequestDto) {
+        this.jobTitle = postRequestDto.getJobTitle();
         this.description = postRequestDto.getDescription();
     }
 
