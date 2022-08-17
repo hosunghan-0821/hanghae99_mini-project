@@ -12,6 +12,7 @@ import com.hanghae.mini_project.repository.RecommentRepository;
 import com.hanghae.mini_project.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +21,9 @@ public class RecommentService {
     private final RecommentRepository recommentRepository;
     private final CommentRepository commentRepository;
 
-    public RecommentResponseDto saveRecomment(UserDetailsImpl userDetails, RecommentRequestDto requestDto,Long commentId){
+    @Transactional
+    public RecommentResponseDto saveRecomment(UserDetailsImpl userDetails,
+                                              RecommentRequestDto requestDto,Long commentId){
 
         //comment가 유효한지 확인 및 작성자 확인 후, recomment 작성
         Comment comment = checkValidatecomment(userDetails,commentId);
@@ -40,10 +43,10 @@ public class RecommentService {
         return makeResponseDto(recomment);
     }
 
-    public RecommentResponseDto updateRecomment(
-            UserDetailsImpl userDetails,
-            RecommentRequestDto requestDto,
-            Long commentId){
+
+    @Transactional
+    public RecommentResponseDto updateRecomment(UserDetailsImpl userDetails,
+                                                RecommentRequestDto requestDto, Long commentId){
 
         //comment가 유효한지 확인 및 작성자 확인 후, recomment 작성
         checkValidatecomment(userDetails,commentId);
@@ -54,10 +57,10 @@ public class RecommentService {
         return makeResponseDto(recomment);
     }
 
-    public RecommentResponseDto deleteRecomment(
-            UserDetailsImpl userDetails,
-            RecommentRequestDto requestDto,
-            Long commentId){
+
+    @Transactional
+    public RecommentResponseDto deleteRecomment(UserDetailsImpl userDetails,
+                                                RecommentRequestDto requestDto, Long commentId){
         checkValidatecomment(userDetails,commentId);
         Recomment recomment=checkValidateRecomment(userDetails,requestDto.getRecommentId());
         recommentRepository.delete(recomment);
@@ -80,7 +83,6 @@ public class RecommentService {
     }
 
     private Recomment checkValidateRecomment(UserDetailsImpl userDetails,Long recommentId){
-
         //recoomentId로 부터 recomment 객체 받아오기
         Recomment recomment = recommentRepository.findById(recommentId)
                 .orElseThrow(()->new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
