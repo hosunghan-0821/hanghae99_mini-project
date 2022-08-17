@@ -30,7 +30,7 @@ public class Comment extends Timestamped{
 
     //연관관계
     //recommentList
-    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY ,cascade =CascadeType.REMOVE)
+    @OneToMany(mappedBy = "comment", fetch = FetchType.EAGER ,cascade =CascadeType.REMOVE)
     private List<Recomment> recommentList = new ArrayList<>();
 
 }

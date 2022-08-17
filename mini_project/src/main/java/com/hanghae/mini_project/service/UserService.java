@@ -6,6 +6,9 @@ import com.hanghae.mini_project.dto.responseDto.LoginInfoDto;
 import com.hanghae.mini_project.dto.responseDto.ResponseDto;
 import com.hanghae.mini_project.entity.User;
 import com.hanghae.mini_project.entity.UserRoleEnum;
+import com.hanghae.mini_project.exception.ErrorCode.CommonErrorCode;
+import com.hanghae.mini_project.exception.ErrorCode.CustomErrorCode;
+import com.hanghae.mini_project.exception.Exception.RestApiException;
 import com.hanghae.mini_project.repository.UserRepository;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.jwt.JwtDecoder;
@@ -37,12 +40,12 @@ public class UserService {
 
         //여기서 요구조건 확인하는
         if(!checkSignupValueCondition(requestDto)){
-            throw new IllegalArgumentException("회원가입 정보가 정확하지 않습니다.");
+            throw new RestApiException(CommonErrorCode.INVALID_PARAMETER);
         };
         //회원 닉네임 중복 확인
         Optional<User> found = userRepository.findByUsername(requestDto.getUsername());
         if(found.isPresent()){
-            throw new IllegalArgumentException("중복된 사용자 id가 존재합니다.");
+            throw new RestApiException(CustomErrorCode.DUPLICATE_RESOURCE);
         }
         requestDto.setPassword(passwordEncoder.encode(requestDto.getPassword()));
         UserRoleEnum role;
