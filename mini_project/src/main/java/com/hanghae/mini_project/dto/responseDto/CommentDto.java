@@ -16,9 +16,12 @@ public class CommentDto {
     private String createdAt;
     private UserDto user;
     private String content;
+
+    private Long id;
     private List<RecommentDto> recommentList = new ArrayList<>();
 
     public CommentDto(Comment comment) {
+        this.id = comment.getId();
         this.createdAt = comment.getCreatedAt();
         this.user = new UserDto(comment.getUser());
         this.content = comment.getContent();

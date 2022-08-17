@@ -3,12 +3,14 @@ package com.hanghae.mini_project.controller;
 import com.hanghae.mini_project.dto.requestDto.postReqDto.PostRequestDto;
 import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.service.PostService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+@Api(tags={"구인 게시글 작성 API "})
 @RestController
 @RequiredArgsConstructor
 public class PostController {
