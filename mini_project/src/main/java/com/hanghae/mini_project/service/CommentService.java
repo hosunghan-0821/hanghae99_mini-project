@@ -80,7 +80,7 @@ public class CommentService {
 
         //문의사항 수정은 문의사항 작성자만 가능할 수 있게 해야하기 때문에 Exception 처리해야함
         if(!comment.getUser().getId().equals(userDetails.getUser().getId())) {
-            throw new RestApiException(CustomErrorCode.UNAUTHORIZED_REQUEST);
+            throw new RestApiException(CustomErrorCode.UNAUTHORIZED_SEEKER_REQUEST);
         }
 
         return comment;
@@ -91,6 +91,7 @@ public class CommentService {
                 .username(comment.getUser().getUsername())
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
+                .profileImageUrl(comment.getUser().getProfileImageUrl())
                 .id(comment.getId())
                 .content(comment.getContent())
                 .build();

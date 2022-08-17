@@ -77,7 +77,7 @@ public class RecommentService {
         //문의사항 답변은 게시글 작성자만 할 수 있게만 해야하기 때문에 Exception으로 컽해야함.
         if(!(comment.getPost().getUser().getId() == userDetails.getUser().getId())){
             //throw new IllegalArgumentException("작성자만 문의사항에 답변할 수 있습니다.");
-            throw new RestApiException(CustomErrorCode.UNAUTHORIZED_REQUEST);
+            throw new RestApiException(CustomErrorCode.UNAUTHORIZED_RECRUIT_REQUEST);
         }
         return comment;
     }
