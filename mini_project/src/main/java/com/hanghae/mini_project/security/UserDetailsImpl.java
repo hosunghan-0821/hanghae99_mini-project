@@ -1,6 +1,7 @@
 package com.hanghae.mini_project.security;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanghae.mini_project.entity.User;
 import com.hanghae.mini_project.entity.UserRoleEnum;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 
 public class UserDetailsImpl implements UserDetails {
 
