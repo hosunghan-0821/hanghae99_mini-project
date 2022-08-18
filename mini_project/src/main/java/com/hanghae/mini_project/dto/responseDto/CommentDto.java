@@ -16,7 +16,6 @@ public class CommentDto {
     private String createdAt;
     private UserDto user;
     private String content;
-
     private Long id;
     private List<RecommentDto> recommentList = new ArrayList<>();
 
@@ -26,10 +25,11 @@ public class CommentDto {
         this.user = new UserDto(comment.getUser());
         this.content = comment.getContent();
 
-        List<Recomment> comments = comment.getRecommentList();
 
-        for(int i = 0 ; i<comments.size();i++){
-            this.recommentList.add(new RecommentDto(comments.get(i)));
+        List<Recomment> recomments = comment.getRecommentList();
+
+        for(int i = 0 ; i<recomments.size();i++){
+            this.recommentList.add(new RecommentDto(recomments.get(i)));
         }
     }
 }

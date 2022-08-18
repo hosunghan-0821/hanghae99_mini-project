@@ -17,7 +17,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Post extends Timestamped{
+    public class Post extends Timestamped{
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -44,8 +44,9 @@ public class Post extends Timestamped{
     // commentList
     // CascadeType.Remove & All 차이 공부
     // mappedBy 연관관계의 주인이 아니다 (난 FK가 아니다 DB에 칼럼을 만들지 말아라)
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER ,cascade =CascadeType.REMOVE)
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY ,cascade =CascadeType.REMOVE) //cascade all ,orphan
     private List<Comment> commentList = new ArrayList<>();
+
 
 
     public Post(PostCreateDto postCreateDto) {

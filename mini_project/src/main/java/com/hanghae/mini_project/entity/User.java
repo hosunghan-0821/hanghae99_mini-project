@@ -37,7 +37,7 @@ public class User extends Timestamped {
     @Column
     private String contactNum;
 
-    @Column
+    @Column(length = 50000)
     private String profileImageUrl;
 
     @Column(nullable = false)

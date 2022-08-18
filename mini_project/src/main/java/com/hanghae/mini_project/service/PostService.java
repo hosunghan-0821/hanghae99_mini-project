@@ -51,6 +51,7 @@ public class PostService {
                     "찾으시는 게시글이 없습니다."), HttpStatus.NOT_FOUND);
         }
         Post foundPost = postRepository.findById(id).get();
+        System.out.println("post id"+foundPost.getId());
         return new ResponseEntity<>(ResponseDto.success("게시글 상세조회",
                 new PostDto(foundPost)), HttpStatus.OK);
     }
