@@ -12,10 +12,13 @@
   - 프론트엔드: 노진서, 이송현
   - 백엔드: 한호성(팀장), 김혜림, 이재헌, 김진무
   
-## 5조 - 노션(Notion) 페이지
-- API 명세서, ERD, 와이어프레임
+## 5조 - 노션(Notion) 
+- API 명세서, ERD, 와이어프레임 
 
 https://www.notion.so/5-SA-9ab4fc4f3d414f3187c3cc0d9fb15c5d
+
+## 프론트엔드 Github
+https://github.com/bennoholik/dev_job
 
 ## 기술스택
 
