@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginInfoDto {
 
+    private String profileImageUrl;
     private String username;
     private String authority;
 }

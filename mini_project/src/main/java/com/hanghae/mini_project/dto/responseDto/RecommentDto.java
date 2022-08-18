@@ -15,12 +15,14 @@ public class RecommentDto {
     private String createdAt;
     private String modifiedAt;
 
+    private String profileImageUrl;
 
     public RecommentDto(Recomment recomment){
-        this.id = recomment.getId();;
+        this.id = recomment.getId();
         this.content = recomment.getContent();
         this.createdAt = recomment.getCreatedAt();
         this.modifiedAt = recomment.getModifiedAt();
-        this.username=recomment.getUser().getUsername();
+        this.username = recomment.getUser().getUsername();
+        this.profileImageUrl = recomment.getUser().getProfileImageUrl();
     }
 }

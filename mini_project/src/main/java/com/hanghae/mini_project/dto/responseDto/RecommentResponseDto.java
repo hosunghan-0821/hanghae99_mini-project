@@ -13,4 +13,5 @@ public class RecommentResponseDto {
     private String content;
     private String createdAt;
     private String modifiedAt;
+    private String profileImageUrl;
 }

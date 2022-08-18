@@ -95,6 +95,7 @@ public class RecommentService {
                 .username(recomment.getUser().getUsername())
                 .createdAt(recomment.getCreatedAt())
                 .modifiedAt(recomment.getModifiedAt())
+                .profileImageUrl(recomment.getUser().getProfileImageUrl())
                 .id(recomment.getId())
                 .content(recomment.getContent())
                 .build();

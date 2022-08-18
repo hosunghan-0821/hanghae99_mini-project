@@ -38,6 +38,7 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
         LoginInfoDto loginInfoDto = LoginInfoDto.builder()
                 .username(userDetails.getUsername())
                 .authority(userDetails.getRole())
+                .profileImageUrl(userDetails.getUser().getProfileImageUrl())
                 .build();
 
         // json 형태로 바꾸기

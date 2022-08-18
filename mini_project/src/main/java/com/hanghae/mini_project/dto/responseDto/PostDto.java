@@ -34,6 +34,12 @@ public class PostDto {
         this.jobTitle = post.getJobTitle();
 
         List<Comment> comments = post.getCommentList();
+        System.out.println("comment : size" + comments.size());
+        for(int i = 0 ; i <comments.size();i++){
+
+            System.out.println(comments.get(i).getId());
+
+        }
         for (Comment comment : comments) {
             this.commentList.add(new CommentDto(comment));
         }
