@@ -1,9 +1,12 @@
 package com.hanghae.mini_project.security;
 
 
-
 import com.hanghae.mini_project.security.filter.FormLoginFilter;
 import com.hanghae.mini_project.security.filter.JwtAuthFilter;
+import com.hanghae.mini_project.security.handler.AccessDeniedHandler;
+import com.hanghae.mini_project.security.handler.AuthenticationFailHandler;
+import com.hanghae.mini_project.security.handler.FormLoginFailureHandler;
+import com.hanghae.mini_project.security.handler.FormLoginSuccessHandler;
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.provider.FormLoginAuthProvider;
 import com.hanghae.mini_project.security.provider.JWTAuthProvider;
@@ -16,16 +19,20 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity()
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig {
@@ -36,13 +43,33 @@ public class WebSecurityConfig {
     private final FormLoginSuccessHandler formLoginSuccessHandler;
 
 
+    private final FormLoginFailureHandler formLoginFailureHandler;
+
+    private final AccessDeniedHandler accessDeniedHandler;
+
+    private final AuthenticationFailHandler authenticationFailHandler;
+
+
+
     @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManagerBuilder auth) throws Exception {
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web
+                .ignoring()
+                .antMatchers( //Swagger 문서 읽기위한 요청허용
+                        "/swagger-ui/**",
+                        "/v2/api-docs",
+                        "/webjars/**",
+                        "/swagger-resources/**",
+                        "/swagger/**");
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain( HttpSecurity http, AuthenticationManagerBuilder auth) throws Exception {
         //인증 (Authentication)**: 사용자 신원을 확인하는 행위
         //인가 (Authorization)**: 사용자 권한을 확인하는 행위
         auth
@@ -50,6 +77,7 @@ public class WebSecurityConfig {
                 .authenticationProvider(formLoginAuthProvider());
 
         http.csrf().disable();
+        http.cors().configurationSource(corsConfigurationSource());
 
         http
                 .addFilterBefore(formLoginFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -68,7 +96,10 @@ public class WebSecurityConfig {
                 .logout()
                 .logoutUrl("/api/logout")
                 .logoutSuccessUrl("/")
-                .permitAll();
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedHandler(accessDeniedHandler);
 
         return http.build();
     }
@@ -83,6 +114,7 @@ public class WebSecurityConfig {
     public FormLoginFilter formLoginFilter() throws Exception {
         FormLoginFilter formLoginFilter = new FormLoginFilter(authenticationManager(authenticationConfiguration));
         formLoginFilter.setFilterProcessesUrl("/api/v1/login");
+        formLoginFilter.setAuthenticationFailureHandler(formLoginFailureHandler);
         formLoginFilter.setAuthenticationSuccessHandler(formLoginSuccessHandler);
         formLoginFilter.afterPropertiesSet();
 //        System.out.println(authenticationManager(authenticationConfiguration));
@@ -110,6 +142,8 @@ public class WebSecurityConfig {
 
         FilterSkipMatcher matcher = new FilterSkipMatcher(skipPathList, "/**");
         JwtAuthFilter filter = new JwtAuthFilter(headerTokenExtractor, matcher);
+
+        filter.setAuthenticationFailureHandler(authenticationFailHandler);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
@@ -120,4 +154,20 @@ public class WebSecurityConfig {
     }
 
 
+    //cors 허용 적용
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedOrigin("https://dev-job-liard.vercel.app");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        configuration.addExposedHeader("Authorization");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",configuration);
+        return source;
+    }
 }

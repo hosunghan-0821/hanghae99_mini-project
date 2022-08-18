@@ -1,10 +1,11 @@
-package com.hanghae.mini_project.security;
+package com.hanghae.mini_project.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.hanghae.mini_project.dto.responseDto.LoginInfoDto;
+import com.hanghae.mini_project.dto.responseDto.ResponseDto;
+import com.hanghae.mini_project.security.UserDetailsImpl;
 import com.hanghae.mini_project.security.jwt.JwtTokenUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -24,14 +25,6 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
 
     private ObjectMapper mapper = new ObjectMapper();
 
-//    private final RefreshTokenRepository refreshTokenRepository;
-//
-//    @Autowired
-//    public FormLoginSuccessHandler(RefreshTokenRepository refreshTokenRepository){
-//        this.refreshTokenRepository =refreshTokenRepository;
-//    }
-
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
@@ -42,10 +35,14 @@ public class FormLoginSuccessHandler extends SavedRequestAwareAuthenticationSucc
         response.setCharacterEncoding("utf-8");
 
         // loginInfoDto 객체 생성
-        LoginInfoDto loginInfoDto = new LoginInfoDto();
+        LoginInfoDto loginInfoDto = LoginInfoDto.builder()
+                .username(userDetails.getUsername())
+                .authority(userDetails.getRole())
+                .profileImageUrl(userDetails.getUser().getProfileImageUrl())
+                .build();
 
         // json 형태로 바꾸기
-        String result = mapper.writeValueAsString(loginInfoDto);
+        String result = mapper.writeValueAsString(ResponseDto.success("로그인 성공",loginInfoDto));
         response.getWriter().write(result);
         response.addHeader(AUTH_HEADER,TOKEN_TYPE+" "+token);
     }

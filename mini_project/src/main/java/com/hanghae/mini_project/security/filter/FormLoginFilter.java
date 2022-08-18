@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 //로그인 인증하는 filter
 public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
 
+
+
     final private ObjectMapper objectMapper;
 
     public FormLoginFilter(final AuthenticationManager authenticationManager){
@@ -35,12 +37,14 @@ public class FormLoginFilter extends UsernamePasswordAuthenticationFilter {
             String password = requestBody.get("password").asText();
             authRequest = new UsernamePasswordAuthenticationToken(username,password);
         }catch (Exception e){
+
             throw new RuntimeException("username , password 입력이 필요합니다.(JSON)");
         }
 
         setDetails(request,authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
     }
+
 
 
 }

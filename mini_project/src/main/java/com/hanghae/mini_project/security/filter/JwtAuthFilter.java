@@ -3,11 +3,14 @@ package com.hanghae.mini_project.security.filter;
 
 import com.hanghae.mini_project.security.jwt.HeaderTokenExtractor;
 import com.hanghae.mini_project.security.jwt.JwtPreProcessingToken;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.FilterChain;
@@ -15,12 +18,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 
 /**
  * Token 을 내려주는 Filter 가 아닌  client 에서 받아지는 Token 을 서버 사이드에서 검증하는 클레스 SecurityContextHolder 보관소에 해당
  * Token 값의 인증 상태를 보관 하고 필요할때 마다 인증 확인 후 권한 상태 확인 하는 기능
  */
-
+@Slf4j
 public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
 
     private final HeaderTokenExtractor extractor;
@@ -33,18 +37,13 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        System.out.println(1);
-        System.out.println("attemptAutentication () 실행 ");
-
+        log.debug("JWT_FILTER : attemptAutentication () 실행 ");
 
         // JWT 값을 담아주는 변수 TokenPayload
         String tokenPayload = request.getHeader("Authorization");
-        String refreshToken = request.getHeader("Refresh");
-        System.out.println("refresh token : " + refreshToken);
-        System.out.println("access token  : " + tokenPayload);
-        if (tokenPayload == null) {
-            response.sendRedirect("/api/loginView");
-            return null;
+
+        if (tokenPayload == null || tokenPayload.equals("")) {
+            throw new AuthenticationCredentialsNotFoundException("토큰이 존재하지 않습니다");
         }
 
         JwtPreProcessingToken jwtToken = new JwtPreProcessingToken(extractor.extract(tokenPayload));
@@ -60,13 +59,11 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
          *  SecurityContext 사용자 Token 저장소를 생성합니다.
          *  SecurityContext 에 사용자의 인증된 Token 값을 저장합니다.
          */
-        System.out.println(3);
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         context.setAuthentication(authResult);
         SecurityContextHolder.setContext(context);
 
         //FilterChain chain 해당 필터가 실행 후 다른 필터도 실행 할 수 있도록 연결 시켜주는 메서드
-
         chain.doFilter(request,response);
     }
 
@@ -78,7 +75,6 @@ public class JwtAuthFilter  extends AbstractAuthenticationProcessingFilter {
          *	인증이 성공하지 못한 단계 이기 때문에 잘못된 Token값을 제거합니다.
          *	모든 인증받은 Context 값이 삭제 됩니다.
          */
-        System.out.println("실패 3");
         SecurityContextHolder.clearContext();
         super.unsuccessfulAuthentication(request,response,failed);
     }

@@ -1,0 +1,4 @@
+application.properties
+.idea
+certificate.p12
+*.show

@@ -1,13 +1,16 @@
 package com.hanghae.mini_project.entity;
 
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
-public class Recomment {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Recomment extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
@@ -23,4 +26,9 @@ public class Recomment {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
+
+    public void update(String content){
+        this.content = content;
+
+    }
 }

@@ -1,29 +1,35 @@
 package com.hanghae.mini_project.controller;
 
 import com.hanghae.mini_project.dto.requestDto.SignupRequestDto;
-import com.hanghae.mini_project.security.UserDetailsImpl;
+import com.hanghae.mini_project.dto.responseDto.ResponseDto;
 import com.hanghae.mini_project.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags={"회원관리 API"})
 @RestController
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @Autowired
-    public UserController(UserService userService){
-        this.userService=userService;
+    @PostMapping("/api/v1/signup")
+    public ResponseDto<?> registerUser(@RequestBody SignupRequestDto signupRequestDto){
+        return userService.registerUser(signupRequestDto);
     }
 
 
-    @PostMapping("/api/v1/signup")
-    @ResponseBody
-    public SignupRequestDto registerUser(@RequestBody SignupRequestDto signupRequestDto){
-        System.out.println(signupRequestDto.getUsername()+"\n"+signupRequestDto.getPassword());
-        userService.registerUser(signupRequestDto);
-        return signupRequestDto;
+    //참조해서 사용하세요~
+    @Secured("ROLE_RECRUITER")//사용가능한 권한 명시
+    @GetMapping("/api/v1/hello")// URL
+    public ResponseEntity<ResponseDto<?>> hello(){
+        return  new ResponseEntity<>(ResponseDto.success("성공","DTO_객체넣으세요"),HttpStatus.OK);
     }
 }
